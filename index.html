@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 30px;
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        h1 { color: #f5f5f5; }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-left: 5px;
+            background: #1f1f1f;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        .task-pending { color: #ff6b6b; }
+        .task-done { color: #6bff95; text-decoration: line-through; }
+
+        ul { list-style-type: none; padding-left: 0; }
+        li { margin-bottom: 12px; }
+
+        #theme-toggle {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .light-mode {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .light-mode input[type="text"] {
+            background: #eee;
+            color: black;
+        }
+
+        .light-mode button {
+            background: #ccc;
+            color: black;
+        }
+
+        .light-mode .task-done {
+            color: green;
+        }
+
+        .light-mode .task-pending {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle">🌙 Toggle Theme</button>
+    <h1>📝 To-Do List</h1>
+
+    <form method="post">
+        <input type="text" name="task" placeholder="New task..." required>
+        <button type="submit" name="add">Add</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <form method="post" style="display:inline;">
+                    <span class="{{ 'task-done' if task.done else 'task-pending' }}">{{ task.text }}</span>
+                    <button type="submit" name="complete" value="{{ loop.index0 }}">
+                        {{ "Undo" if task.done else "Done" }}
+                    </button>
+                    <button type="submit" name="delete" value="{{ loop.index0 }}">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        const toggleBtn = document.getElementById("theme-toggle");
+        toggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("light-mode");
+        });
+    </script>
+</body>
+</html>
